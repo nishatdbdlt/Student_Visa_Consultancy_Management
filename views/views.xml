@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_visa_consultancy_root"
+              name="Visa Consultancy"
+              sequence="10"/>
+
+    <!-- Students Menu -->
+    <menuitem id="menu_visa_students"
+              name="Students"
+              parent="menu_visa_consultancy_root"
+              sequence="10"/>
+
+    <menuitem id="menu_visa_student_list"
+              name="Students"
+              parent="menu_visa_students"
+              action="action_visa_student"
+              sequence="10"/>
+     <menuitem id="menu_visa_university"
+              name="University"
+              parent="menu_visa_students"
+              action="action_visa_university"
+              sequence="10"/>
+
+
+
+    <!-- Applications Menu -->
+
+
+</odoo>

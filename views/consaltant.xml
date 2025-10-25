@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Consultant Tree View -->
+    <record id="view_visa_consultant_tree" model="ir.ui.view">
+        <field name="name">visa.consultant.tree</field>
+        <field name="model">visa.consultant</field>
+        <field name="arch" type="xml">
+            <tree string="Consultants">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="expertise_level"/>
+                <field name="total_students"/>
+                <field name="total_applications"/>
+                <field name="success_rate" widget="percentage"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Consultant Form View -->
+    <record id="view_visa_consultant_form" model="ir.ui.view">
+        <field name="name">visa.consultant.form</field>
+        <field name="model">visa.consultant</field>
+        <field name="arch" type="xml">
+            <form string="Consultant">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_students" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="total_students" widget="statinfo" string="Students"/>
+                        </button>
+                        <button name="action_view_applications" type="object" class="oe_stat_button" icon="fa-file-text">
+                            <field name="total_applications" widget="statinfo" string="Applications"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Consultant Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="employee_id"/>
+                            <field name="user_id"/>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                        </group>
+                        <group string="Employment">
+                            <field name="joining_date"/>
+                            <field name="department"/>
+                            <field name="expertise_level"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Specialization">
+                        <field name="specialization_country_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Performance Metrics">
+                        <group>
+                            <field name="success_rate" widget="percentpie"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Consultant notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Consultant Search View -->
+    <record id="view_visa_consultant_search" model="ir.ui.view">
+        <field name="name">visa.consultant.search</field>
+        <field name="model">visa.consultant</field>
+        <field name="arch" type="xml">
+            <search string="Search Consultants">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="specialization_country_ids"/>
+                <filter string="Junior" name="junior" domain="[('expertise_level', '=', 'junior')]"/>
+                <filter string="Senior" name="senior" domain="[('expertise_level', '=', 'senior')]"/>
+                <filter string="Expert" name="expert" domain="[('expertise_level', '=', 'expert')]"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Expertise Level" name="group_expertise" context="{'group_by': 'expertise_level'}"/>
+                    <filter string="Department" name="group_department" context="{'group_by': 'department'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Consultant Action -->
+    <record id="action_visa_consultant" model="ir.actions.act_window">
+        <field name="name">Consultants</field>
+        <field name="res_model">visa.consultant</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new consultant record
+            </p>
+            <p>
+                Add consultants to manage student applications.
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_visa_consultant"
+              name="consultant"
+              parent="menu_visa_students"
+              action="action_visa_consultant"
+              sequence="10"/>
+
+
+</odoo>

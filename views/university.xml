@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- University Tree View -->
+    <record id="view_visa_university_tree" model="ir.ui.view">
+        <field name="name">visa.university.tree</field>
+        <field name="model">visa.university</field>
+        <field name="arch" type="xml">
+            <tree string="Universities">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id"/>
+                <field name="city"/>
+                <field name="ranking"/>
+<!--                <field name="course_count"/>-->
+                <field name="is_partner" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- University Form View -->
+    <record id="view_visa_university_form" model="ir.ui.view">
+        <field name="name">visa.university.form</field>
+        <field name="model">visa.university</field>
+        <field name="arch" type="xml">
+            <form string="University">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_courses" type="object" class="oe_stat_button" icon="fa-book">
+                            <field name="course_count" widget="statinfo" string="Courses"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Partner" bg_color="bg-success"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="University Name"/>
+                        </h1>
+                        <h3>
+                            <field name="code" placeholder="University Code"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="country_id"/>
+                            <field name="city"/>
+                            <field name="type"/>
+                            <field name="ranking"/>
+                            <field name="established_year"/>
+                        </group>
+                        <group string="Contact">
+                            <field name="website" widget="url"/>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="is_partner"/>
+                        </group>
+                    </group>
+                    <group string="Requirements">
+                        <group>
+                            <field name="min_ielts"/>
+                            <field name="min_toefl"/>
+                        </group>
+                        <group>
+                            <field name="min_percentage"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Internal Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- University Search View -->
+    <record id="view_visa_university_search" model="ir.ui.view">
+        <field name="name">visa.university.search</field>
+        <field name="model">visa.university</field>
+        <field name="arch" type="xml">
+            <search string="Search Universities">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id"/>
+                <field name="city"/>
+                <filter string="Partner Universities" name="partner" domain="[('is_partner', '=', True)]"/>
+                <filter string="Public" name="public" domain="[('type', '=', 'public')]"/>
+                <filter string="Private" name="private" domain="[('type', '=', 'private')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- University Action -->
+    <record id="action_visa_university" model="ir.actions.act_window">
+        <field name="name">Universities</field>
+        <field name="res_model">visa.university</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new university record
+            </p>
+            <p>
+                Add universities and their courses to the system.
+            </p>
+        </field>
+    </record>
+
+</odoo>

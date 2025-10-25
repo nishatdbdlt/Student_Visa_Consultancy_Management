@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Student Tree View -->
+    <record id="view_visa_student_tree" model="ir.ui.view">
+        <field name="name">visa.student.tree</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <tree string="Students">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="passport_number"/>
+<!--                <field name="consultant_id"/>-->
+                <field name="application_count"/>
+                <field name="state" widget="badge" decoration-info="state=='inquiry'" decoration-success="state=='completed'" decoration-warning="state=='in_process'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Student Form View -->
+    <record id="view_visa_student_form" model="ir.ui.view">
+        <field name="name">visa.student.form</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <header>
+                    <button name="action_set_registered" string="Set Registered" type="object"/>
+                    <button name="action_set_in_process" string="In Process" type="object"/>
+                    <button name="action_set_completed" string="Completed" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="inquiry,registered,in_process,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_applications" type="object" class="oe_stat_button" icon="fa-graduation-cap">
+                            <field name="application_count" widget="statinfo" string="Applications"/>
+                        </button>
+                        <button name="action_view_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="document_count" widget="statinfo" string="Documents"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Completed" bg_color="bg-success"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Student Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="consultant_id"/>
+                            <field name="total_paid" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Address" name="address">
+                            <group>
+                                <group>
+                                    <field name="street" placeholder="Street..."/>
+                                    <field name="street2"/>
+                                    <field name="city"/>
+                                </group>
+                                <group>
+                                    <field name="state_id"/>
+                                    <field name="zip"/>
+                                    <field name="country_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Passport" name="passport">
+                            <group>
+                                <group>
+                                    <field name="passport_number"/>
+                                    <field name="passport_country_id"/>
+                                </group>
+                                <group>
+                                    <field name="passport_issue_date"/>
+                                    <field name="passport_expiry_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Education" name="education">
+                            <group>
+                                <group>
+                                    <field name="highest_qualification"/>
+                                    <field name="percentage"/>
+                                    <field name="year_of_passing"/>
+                                </group>
+                                <group>
+                                    <field name="english_test"/>
+                                    <field name="overall_score"/>
+                                    <field name="test_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Student Search View -->
+    <record id="view_visa_student_search" model="ir.ui.view">
+        <field name="name">visa.student.search</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <search string="Search Students">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="passport_number"/>
+<!--                <field name="consultant_id"/>-->
+                <filter string="Inquiry" name="inquiry" domain="[('state', '=', 'inquiry')]"/>
+                <filter string="Registered" name="registered" domain="[('state', '=', 'registered')]"/>
+                <filter string="In Process" name="in_process" domain="[('state', '=', 'in_process')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <separator/>
+<!--                <filter string="My Students" name="my_students" domain="[('consultant_id.user_id', '=', uid)]"/>-->
+                <group expand="0" string="Group By">
+<!--                    <filter string="Consultant" name="group_consultant" context="{'group_by': 'consultant_id'}"/>-->
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Student Action -->
+    <record id="action_visa_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">visa.student</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_registered': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new student record
+            </p>
+            <p>
+                Click the create button to add a new student to the system.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Student Tree View -->
+    <record id="view_visa_student_tree" model="ir.ui.view">
+        <field name="name">visa.student.tree</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <tree string="Students">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="passport_number"/>
+                <!-- <field name="consultant_id"/> -->
+<!--                <field name="application_count"/>-->
+                <field name="state"
+                       widget="badge"
+                       decoration-info="state=='inquiry'"
+                       decoration-success="state=='completed'"
+                       decoration-warning="state=='in_process'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Student Form View -->
+    <record id="view_visa_student_form" model="ir.ui.view">
+        <field name="name">visa.student.form</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <header>
+                    <button name="action_set_registered" string="Set Registered" type="object"/>
+                    <button name="action_set_in_process" string="In Process" type="object"/>
+                    <button name="action_set_completed" string="Completed" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="inquiry,registered,in_process,completed"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Completed" bg_color="bg-success"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Student Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="total_paid" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Address" name="address">
+                            <group>
+                                <group>
+                                    <field name="street" placeholder="Street..."/>
+                                    <field name="street2"/>
+                                    <field name="city"/>
+                                </group>
+                                <group>
+                                    <field name="state_id"/>
+                                    <field name="zip"/>
+                                    <field name="country_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Passport" name="passport">
+                            <group>
+                                <group>
+                                    <field name="passport_number"/>
+                                    <field name="passport_country_id"/>
+                                </group>
+                                <group>
+                                    <field name="passport_issue_date"/>
+                                    <field name="passport_expiry_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Education" name="education">
+                            <group>
+                                <group>
+                                    <field name="highest_qualification"/>
+                                    <field name="percentage"/>
+                                    <field name="year_of_passing"/>
+                                </group>
+                                <group>
+                                    <field name="english_test"/>
+                                    <field name="overall_score"/>
+                                    <field name="test_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Student Search View -->
+    <record id="view_visa_student_search" model="ir.ui.view">
+        <field name="name">visa.student.search</field>
+        <field name="model">visa.student</field>
+        <field name="arch" type="xml">
+            <search string="Search Students">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="passport_number"/>
+                <filter string="Inquiry" name="inquiry" domain="[('state', '=', 'inquiry')]"/>
+                <filter string="Registered" name="registered" domain="[('state', '=', 'registered')]"/>
+                <filter string="In Process" name="in_process" domain="[('state', '=', 'in_process')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Student Action -->
+    <record id="action_visa_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">visa.student</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_registered': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new student record
+            </p>
+            <p>
+                Click the create button to add a new student to the system.
+            </p>
+        </field>
+    </record>
+
+
+
+    <!-- Menus -->
+
+
+</odoo>
+
+
+
+

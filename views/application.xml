@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Application Tree View -->
+    <record id="view_visa_application_tree" model="ir.ui.view">
+        <field name="name">visa.application.tree</field>
+        <field name="model">visa.application</field>
+        <field name="arch" type="xml">
+            <tree string="Applications" decoration-success="state=='visa_approved'" decoration-danger="state=='rejected'" decoration-warning="state=='in_progress'">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="university_id"/>
+                <field name="course_id"/>
+                <field name="intake"/>
+                <field name="intake_year"/>
+                <field name="consultant_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='visa_approved'" decoration-danger="state=='rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Application Form View -->
+    <record id="view_visa_application_form" model="ir.ui.view">
+        <field name="name">visa.application.form</field>
+        <field name="model">visa.application</field>
+        <field name="arch" type="xml">
+            <form string="Application">
+                <header>
+                    <button name="action_submit" string="Submit for Document Verification" type="object"/>
+                    <button name="action_verify_documents" string="Verify Documents" type="object"/>
+                    <button name="action_submit_to_university" string="Submit to University" type="object"/>
+                    <button name="action_offer_received" string="Offer Received" type="object"/>
+                    <button name="action_accept_offer" string="Accept Offer" type="object"/>
+                    <button name="action_file_visa" string="File Visa" type="object"/>
+                    <button name="action_visa_approved" string="Visa Approved" type="object"/>
+                    <button name="action_reject" string="Reject" type="object"/>
+                    <button name="action_cancel" string="Cancel" type="object" confirm="Are you sure you want to cancel this application?"/>
+                    <button name="action_set_draft" string="Set to Draft" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,document_verification,submitted,in_progress,offer_received,visa_filed,visa_approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="document_count" widget="statinfo" string="Documents"/>
+                        </button>
+                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="payment_count" widget="statinfo" string="Payments"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Approved" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="Rejected" bg_color="bg-danger"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Student Information">
+                            <field name="student_id" options="{'no_create': True}"/>
+                            <field name="student_email"/>
+                            <field name="student_phone"/>
+                        </group>
+                        <group string="Application Details">
+                            <field name="application_date"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="consultant_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="University  Course">
+                          <field name="university_id" options="{'no_create': True}"/>
+                            <field name="course_id" options="{'no_create': True}"/>
+                            <field name="intake"/>
+                            <field name="intake_year"/>
+                        </group>
+                        <group string="Important Dates">
+                            <field name="submission_date"/>
+                            <field name="university_response_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Financial">
+                            <field name="service_fee" widget="monetary"/>
+                            <field name="university_fee" widget="monetary"/>
+                            <field name="total_fee" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Outcome">
+                            <field name="outcome"/>
+                            <field name="rejection_reason"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Application notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Application Kanban View -->
+    <record id="view_visa_application_kanban" model="ir.ui.view">
+        <field name="name">visa.application.kanban</field>
+        <field name="model">visa.application</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="university_id"/>
+                <field name="consultant_id"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                    </div>
+                                    <field name="priority" widget="priority"/>
+                                </div>
+                                <div>
+                                    <i class="fa fa-user"/> <field name="student_id"/>
+                                </div>
+                                <div>
+                                    <i class="fa fa-university"/> <field name="university_id"/>
+                                </div>
+                                <div>
+                                    <i class="fa fa-user-md"/> <field name="consultant_id"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="intake"/> <field name="intake_year"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Application Search View -->
+<!--    <record id="view_visa_application_search" model="ir.ui.view">-->
+<!--        <field name="name">visa.application.search</field>-->
+<!--        <field name="model">visa.application</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search string="Search Applications">-->
+<!--                <field name="name"/>-->
+<!--                <field name="student_id"/>-->
+<!--                <field name="university_id"/>-->
+<!--                <field name="consultant_id"/>-->
+<!--                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>-->
+<!--                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>-->
+<!--                <filter string="Offer Received" name="offer_received" domain="[('state', '=', 'offer_received')]"/>-->
+<!--                <filter string="Visa Approved" name="visa_approved" domain="[('state', '=', 'visa_approved')]"/>-->
+<!--                <separator/>-->
+<!--                <filter string="My Applications" name="my_applications" domain="[('consultant_id.user_id', '=', uid)]"/>-->
+<!--                <filter string="High Priority" name="high_priority" domain="[('priority', '=', '1')]"/>-->
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter string="Student" name="group_student" context="{'group_by': 'student_id'}"/>-->
+<!--                    <filter string="University" name="group_university" context="{'group_by': 'university_id'}"/>-->
+<!--                    <filter string="Consultant" name="group_consultant" context="{'group_by': 'consultant_id'}"/>-->
+<!--                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>-->
+<!--                    <filter string="Intake" name="group_intake" context="{'group_by': 'intake'}"/>-->
+<!--                </group>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <!-- Application Action -->
+    <record id="action_visa_application" model="ir.actions.act_window">
+        <field name="name">Applications</field>
+        <field name="res_model">visa.application</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_in_progress': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new visa application
+            </p>
+            <p>
+                Click the create button to add a new application.
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_visa_university_application"
+          name="Applications"
+          parent="menu_visa_consultancy_root"
+          action="action_visa_application"
+          sequence="10"/>
+
+</odoo>

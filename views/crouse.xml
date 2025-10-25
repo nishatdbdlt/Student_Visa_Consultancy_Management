@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action -->
+    <record id="action_visa_course" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">visa.course</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Course record
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+
+
+    <!-- Tree View -->
+    <record id="view_visa_course_tree" model="ir.ui.view">
+        <field name="name">visa.course.tree</field>
+        <field name="model">visa.course</field>
+        <field name="arch" type="xml">
+            <tree string="Courses" default_order="name asc">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="level"/>
+                <field name="duration"/>
+                <field name="intake"/>
+                <field name="required_percentage"/>
+                <field name="required_ielts"/>
+                <field name="tuition_fee"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_visa_course_form" model="ir.ui.view">
+        <field name="name">visa.course.form</field>
+        <field name="model">visa.course</field>
+        <field name="arch" type="xml">
+            <form string="Course" create="true" edit="true">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="level"/>
+                            <field name="duration"/>
+                            <field name="intake"/>
+                        </group>
+                        <group>
+                            <field name="required_percentage"/>
+                            <field name="required_ielts"/>
+                            <field name="tuition_fee"/>
+                            <field name="currency_id" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <menuitem id="menu_visa_crouse"
+              name="crouse"
+              parent="menu_visa_students"
+              action="action_visa_course"
+              sequence="10"/>
+
+</odoo>
