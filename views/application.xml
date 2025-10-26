@@ -194,10 +194,6 @@
             </p>
         </field>
     </record>
-    <menuitem id="menu_visa_university_application"
-          name="Applications"
-          parent="menu_visa_consultancy_root"
-          action="action_visa_application"
-          sequence="10"/>
+
 
 </odoo>

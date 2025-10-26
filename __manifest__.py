@@ -2,7 +2,7 @@
 {
     'name': "Student_Visa_Consultancy_Management",
 
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
+    'summary': "Short",
 
     'description': """
 Long description of module's purpose
@@ -18,11 +18,13 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail'],
+    'depends': ['base','mail',],
 
     # always loaded
     'data': [
+        'security/security.xml',
          'security/ir.model.access.csv',
+        'data/secquence.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/student.xml',
@@ -32,6 +34,8 @@ Long description of module's purpose
         'views/payment.xml',
         'views/consaltant.xml',
         'views/crouse.xml',
+        'views/invoice.xml',
+        'views/invoice_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

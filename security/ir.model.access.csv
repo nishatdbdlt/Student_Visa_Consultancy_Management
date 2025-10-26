@@ -13,3 +13,34 @@ access_visa_payment,access_visa_payment,model_visa_payment,base.group_user,1,1,1
 access_visa_consultant,access_visa_consultant,model_visa_consultant,base.group_user,1,1,1,1
 
 
+
+
+access_visa_student_user,visa.student user,model_visa_student,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_student_consultant,visa.student consultant,model_visa_student,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_student_manager,visa.student manager,model_visa_student,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+access_visa_application_user,visa.application user,model_visa_application,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_application_consultant,visa.application consultant,model_visa_application,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_application_manager,visa.application manager,model_visa_application,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+access_visa_university_user,visa.university user,model_visa_university,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_university_consultant,visa.university consultant,model_visa_university,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_university_manager,visa.university manager,model_visa_university,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+access_visa_course_user,visa.course user,model_visa_course,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_course_consultant,visa.course consultant,model_visa_course,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_course_manager,visa.course manager,model_visa_course,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+access_visa_document_user,visa.document user,model_visa_document,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_document_consultant,visa.document consultant,model_visa_document,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_document_manager,visa.document manager,model_visa_document,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+access_visa_payment_user,visa.payment user,model_visa_payment,student__visa__consultancy__management.group_visa_user,1,0,0,0
+access_visa_payment_consultant,visa.payment consultant,model_visa_payment,student__visa__consultancy__management.group_visa_consultant,1,1,1,0
+access_visa_payment_manager,visa.payment manager,model_visa_payment,student__visa__consultancy__management.group_visa_manager,1,1,1,1
+
+
+access_visa_invoice_user,access_visa_invoice_user,model_visa_invoice,base.group_user,1,1,1,1
+access_visa_invoice_line_user,access_visa_invoice_line_user,model_visa_invoice_line,base.group_user,1,1,1,1
+
+

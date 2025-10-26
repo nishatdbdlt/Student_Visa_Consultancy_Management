@@ -112,10 +112,6 @@
             </p>
         </field>
     </record>
-    <menuitem id="menu_visa_document"
-              name="document"
-              parent="menu_visa_students"
-              action="action_visa_document"
-              sequence="10"/>
+
 
 </odoo>

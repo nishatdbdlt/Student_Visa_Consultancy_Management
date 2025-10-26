@@ -7,3 +7,4 @@ from . import applicatioon
 from . import  documennt
 from . import payment
 from . import consultant
+from . import invoice

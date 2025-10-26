@@ -1,31 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- Main Menu -->
-    <menuitem id="menu_visa_consultancy_root"
+        <menuitem id="menu_visa_consultancy_root"
               name="Visa Consultancy"
               sequence="10"/>
 
-    <!-- Students Menu -->
-    <menuitem id="menu_visa_students"
-              name="Students"
+    <menuitem id="menu_visa_university"
+              name="university"
               parent="menu_visa_consultancy_root"
-              sequence="10"/>
-
-    <menuitem id="menu_visa_student_list"
-              name="Students"
-              parent="menu_visa_students"
-              action="action_visa_student"
-              sequence="10"/>
-     <menuitem id="menu_visa_university"
-              name="University"
-              parent="menu_visa_students"
               action="action_visa_university"
               sequence="10"/>
+        <menuitem id="menu_visa_student_list"
+              name="Students"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_student"
+              sequence="10"/>
+        <menuitem id="menu_visa_invoice"
+              name="invoice"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_invoice"
+              sequence="10"/>
+       <menuitem id="menu_visa_university_application"
+          name="Applications"
+          parent="menu_visa_consultancy_root"
+          action="action_visa_application"
+          sequence="10"/>
+        <menuitem id="menu_visa_consultant"
+              name="consultant"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_consultant"
+              sequence="10"/>
+       <menuitem id="menu_visa_crouse"
+              name="crouse"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_course"
+              sequence="10"/>
+
+    <menuitem id="menu_visa_document"
+              name="document"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_document"
+              sequence="10"/>
+
+     <menuitem id="menu_visa_payment"
+              name="payment"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_payment"
+              sequence="10"/>
 
 
 
-    <!-- Applications Menu -->
 
 
 </odoo>

@@ -66,10 +66,6 @@
             </form>
         </field>
     </record>
-    <menuitem id="menu_visa_crouse"
-              name="crouse"
-              parent="menu_visa_students"
-              action="action_visa_course"
-              sequence="10"/>
+
 
 </odoo>

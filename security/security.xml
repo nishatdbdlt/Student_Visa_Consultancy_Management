@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Visa Consultancy Category -->
+        <record id="module_category_visa_consultancy" model="ir.module.category">
+            <field name="name">Visa Consultancy</field>
+            <field name="description">Manage visa consultancy operations</field>
+            <field name="sequence">15</field>
+        </record>
+
+        <!-- User Group -->
+        <record id="group_visa_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_visa_consultancy"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Consultant Group -->
+        <record id="group_visa_consultant" model="res.groups">
+            <field name="name">Consultant</field>
+            <field name="category_id" ref="module_category_visa_consultancy"/>
+            <field name="implied_ids" eval="[(4, ref('group_visa_user'))]"/>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="group_visa_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_visa_consultancy"/>
+            <field name="implied_ids" eval="[(4, ref('group_visa_consultant'))]"/>
+        </record>
+
+        <!-- Record Rules for Students -->
+        <record id="visa_student_user_rule" model="ir.rule">
+            <field name="name">Visa Student User Rule</field>
+            <field name="model_id" ref="model_visa_student"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_visa_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="visa_student_consultant_rule" model="ir.rule">
+            <field name="name">Visa Student Consultant Rule</field>
+            <field name="model_id" ref="model_visa_student"/>
+            <field name="domain_force">['|', ('consultant_id.user_id', '=', user.id), ('consultant_id', '=', False)]</field>
+            <field name="groups" eval="[(4, ref('group_visa_consultant'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="visa_student_manager_rule" model="ir.rule">
+            <field name="name">Visa Student Manager Rule</field>
+            <field name="model_id" ref="model_visa_student"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_visa_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rules for Applications -->
+        <record id="visa_application_consultant_rule" model="ir.rule">
+            <field name="name">Visa Application Consultant Rule</field>
+            <field name="model_id" ref="model_visa_application"/>
+            <field name="domain_force">['|', ('consultant_id.user_id', '=', user.id), ('consultant_id', '=', False)]</field>
+            <field name="groups" eval="[(4, ref('group_visa_consultant'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="visa_application_manager_rule" model="ir.rule">
+            <field name="name">Visa Application Manager Rule</field>
+            <field name="model_id" ref="model_visa_application"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_visa_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

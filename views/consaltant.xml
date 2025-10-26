@@ -120,11 +120,6 @@
             </p>
         </field>
     </record>
-    <menuitem id="menu_visa_consultant"
-              name="consultant"
-              parent="menu_visa_students"
-              action="action_visa_consultant"
-              sequence="10"/>
 
 
 </odoo>
