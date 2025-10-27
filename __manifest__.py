@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail',],
+    'depends': ['base','mail','website',],
 
     # always loaded
     'data': [
@@ -36,10 +36,15 @@ Long description of module's purpose
         'views/crouse.xml',
         'views/invoice.xml',
         'views/invoice_report.xml',
+        'views/dashboard.xml',
+        'views/portal.xml',
+        'views/sidebar.xml',
     ],
+
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+
 }
 

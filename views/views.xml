@@ -46,6 +46,11 @@
               parent="menu_visa_consultancy_root"
               action="action_visa_payment"
               sequence="10"/>
+     <menuitem id="menu_visa_dashboard"
+              name="dashboard"
+              parent="menu_visa_consultancy_root"
+              action="action_visa_dashboard"
+              sequence="10"/>
 
 
 

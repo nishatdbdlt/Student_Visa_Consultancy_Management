@@ -8,3 +8,4 @@ from . import  documennt
 from . import payment
 from . import consultant
 from . import invoice
+from . import dashboard

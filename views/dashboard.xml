@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Dashboard Form View -->
+    <record id="view_visa_dashboard_form" model="ir.ui.view">
+        <field name="name">visa.dashboard.form</field>
+        <field name="model">visa.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Visa Consultancy Dashboard</h1>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <group>
+                        <group string="Overall Statistics">
+                            <div class="o_stat_info">
+                                <button name="action_view_students" type="object" class="oe_stat_button" icon="fa-users">
+                                    <field name="total_students" widget="statinfo" string="Total Students"/>
+                                </button>
+                            </div>
+                            <div class="o_stat_info">
+                                <button name="action_view_applications" type="object" class="oe_stat_button" icon="fa-file-text">
+                                    <field name="total_applications" widget="statinfo" string="Total Applications"/>
+                                </button>
+                            </div>
+                            <field name="total_revenue" widget="monetary"/>
+                            <field name="success_rate" widget="percentage"/>
+                        </group>
+
+                        <group string="This Month">
+                            <field name="students_this_month"/>
+                            <field name="applications_this_month"/>
+                            <field name="revenue_this_month" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Alerts Section -->
+                    <group string="Pending Actions">
+                        <group>
+                            <div class="o_stat_info">
+                                <button name="action_view_pending_documents" type="object" class="oe_stat_button" icon="fa-file-o text-warning">
+                                    <field name="pending_documents" widget="statinfo" string="Pending Documents"/>
+                                </button>
+                            </div>
+                        </group>
+                        <group>
+                            <div class="o_stat_info">
+                                <button name="action_view_overdue_payments" type="object" class="oe_stat_button" icon="fa-exclamation-triangle text-danger">
+                                    <field name="overdue_payments" widget="statinfo" string="Overdue Payments"/>
+                                </button>
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- Application Status Breakdown -->
+                    <group string="Application Status Breakdown">
+                        <group>
+                            <field name="draft_applications"/>
+                            <field name="in_progress_applications"/>
+                        </group>
+                        <group>
+                            <field name="approved_applications"/>
+                            <field name="rejected_applications"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_visa_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">visa.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{
+            'form_view_initial_mode': 'readonly',
+            'create': False,
+            'edit': False,
+            'delete': False
+        }</field>
+    </record>
+
+    <!-- Dashboard Menu Action (Direct) -->
+    <record id="action_visa_dashboard_open" model="ir.actions.server">
+        <field name="name">Open Dashboard</field>
+        <field name="model_id" ref="model_visa_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">
+# Get or create dashboard record
+dashboard = env['visa.dashboard'].search([], limit=1)
+if not dashboard:
+    dashboard = env['visa.dashboard'].create({'name': 'Dashboard'})
+
+# Open dashboard
+action = {
+    'type': 'ir.actions.act_window',
+    'res_model': 'visa.dashboard',
+    'res_id': dashboard.id,
+    'view_mode': 'form',
+    'target': 'current',
+    'context': {'form_view_initial_mode': 'readonly'},
+}
+        </field>
+    </record>
+
+</odoo>

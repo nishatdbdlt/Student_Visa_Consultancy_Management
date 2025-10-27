@@ -11,6 +11,8 @@ access_visa_document,access_visa_document,model_visa_document,base.group_user,1,
 access_visa_payment,access_visa_payment,model_visa_payment,base.group_user,1,1,1,1
 
 access_visa_consultant,access_visa_consultant,model_visa_consultant,base.group_user,1,1,1,1
+access_visa_dashboard,access_visa_dashboard,model_visa_dashboard,base.group_user,1,1,1,1
+
 
 
 

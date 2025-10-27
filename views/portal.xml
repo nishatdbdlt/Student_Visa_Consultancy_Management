@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== PORTAL LAYOUT ==================== -->
+
+    <!-- Add menu items to portal home -->
+    <template id="portal_my_home_menu_visa" name="Portal My Home Menu - Visa" inherit_id="portal.portal_my_home" priority="50">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">Visa Dashboard</t>
+            <t t-set="url" t-value="'/my/visa/dashboard'"/>
+        </t>
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">Students</t>
+            <t t-set="url" t-value="'/my/visa/students'"/>
+            <t t-set="placeholder_count" t-value="'student_count'"/>
+        </t>
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">Applications</t>
+            <t t-set="url" t-value="'/my/visa/applications'"/>
+            <t t-set="placeholder_count" t-value="'application_count'"/>
+        </t>
+    </xpath>
+</template>
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <template id="portal_visa_dashboard" name="Visa Dashboard">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Visa Dashboard</t>
+            </t>
+
+            <div class="container mt-4">
+                <!-- Statistics Cards Row 1 -->
+                <div class="row mb-4">
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card border-primary shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-graduation-cap fa-3x text-primary mb-3"/>
+                                <h3 class="card-title mb-2"><t t-esc="total_students"/></h3>
+                                <p class="card-text text-muted">Total Students</p>
+                                <small class="text-success">+<t t-esc="students_this_month"/> this month</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card border-info shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-file-text fa-3x text-info mb-3"/>
+                                <h3 class="card-title mb-2"><t t-esc="total_applications"/></h3>
+                                <p class="card-text text-muted">Total Applications</p>
+                                <small class="text-success">+<t t-esc="applications_this_month"/> this month</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card border-success shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-money fa-3x text-success mb-3"/>
+                                <h3 class="card-title mb-2">৳<t t-esc="'%.2f' % total_revenue"/></h3>
+                                <p class="card-text text-muted">Total Revenue</p>
+                                <small class="text-success">+৳<t t-esc="'%.2f' % revenue_this_month"/> this month</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card border-warning shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-check-circle fa-3x text-warning mb-3"/>
+                                <h3 class="card-title mb-2"><t t-esc="'%.1f' % success_rate"/>%</h3>
+                                <p class="card-text text-muted">Success Rate</p>
+                                <small class="text-muted">Visa Approval Rate</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Status Row -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-bar-chart mr-2"/>Application Status</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-3 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h4 class="text-secondary"><t t-esc="draft_applications"/></h4>
+                                            <p class="mb-0 text-muted">Draft</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h4 class="text-primary"><t t-esc="in_progress_applications"/></h4>
+                                            <p class="mb-0 text-muted">In Progress</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h4 class="text-success"><t t-esc="approved_applications"/></h4>
+                                            <p class="mb-0 text-muted">Approved</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h4 class="text-danger"><t t-esc="rejected_applications"/></h4>
+                                            <p class="mb-0 text-muted">Rejected</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Row -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-warning shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fa fa-exclamation-triangle text-warning mr-2"/>Pending Documents</h5>
+                                <h2 class="mb-0"><t t-esc="pending_documents"/></h2>
+                                <p class="text-muted mb-0">Documents awaiting verification</p>
+                                <a href="/my/visa/documents?filterby=pending" class="btn btn-sm btn-warning mt-3">View Documents</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-danger shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fa fa-clock-o text-danger mr-2"/>Overdue Payments</h5>
+                                <h2 class="mb-0"><t t-esc="overdue_payments"/></h2>
+                                <p class="text-muted mb-0">Payments past due date</p>
+                                <a href="/my/visa/payments?filterby=pending" class="btn btn-sm btn-danger mt-3">View Payments</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-bolt mr-2"/>Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <a href="/my/visa/student/create" class="btn btn-outline-primary btn-block">
+                                            <i class="fa fa-plus mr-2"/>Add Student
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <a href="/my/visa/application/create" class="btn btn-outline-info btn-block">
+                                            <i class="fa fa-file-text mr-2"/>New Application
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <a href="/my/visa/students" class="btn btn-outline-success btn-block">
+                                            <i class="fa fa-list mr-2"/>View Students
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <a href="/my/visa/applications" class="btn btn-outline-warning btn-block">
+                                            <i class="fa fa-search mr-2"/>View Applications
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== STUDENTS LIST ==================== -->
+    <template id="portal_my_students" name="My Students">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Students</t>
+            </t>
+
+            <div class="container mt-3">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <form method="get" class="form-inline">
+                            <input type="text" name="search" class="form-control mr-2" placeholder="Search students..." t-att-value="search"/>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <a href="/my/visa/student/create" class="btn btn-success">
+                            <i class="fa fa-plus mr-1"/>Add New Student
+                        </a>
+                    </div>
+                </div>
+
+                <t t-if="not students">
+                    <div class="alert alert-info text-center" role="alert">
+                        <i class="fa fa-info-circle fa-3x mb-3"/>
+                        <h4>No students found</h4>
+                        <p>Start by adding your first student.</p>
+                        <a href="/my/visa/student/create" class="btn btn-primary mt-2">Add Student</a>
+                    </div>
+                </t>
+
+                <t t-if="students">
+                    <div class="row">
+                        <t t-foreach="students" t-as="student">
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-3" style="width: 50px; height: 50px; font-size: 24px;">
+                                                <t t-esc="student.name[:1].upper()"/>
+                                            </div>
+                                            <div>
+                                                <h5 class="card-title mb-1">
+                                                    <a t-attf-href="/my/visa/student/#{student.id}" class="text-dark">
+                                                        <t t-esc="student.name"/>
+                                                    </a>
+                                                </h5>
+                                                <small class="text-muted">
+                                                    <i class="fa fa-envelope mr-1"/><t t-esc="student.email"/>
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <i class="fa fa-phone text-muted mr-2"/><t t-esc="student.phone or 'N/A'"/>
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="fa fa-passport text-muted mr-2"/><t t-esc="student.passport_number or 'N/A'"/>
+                                        </div>
+                                        <div class="mb-3">
+<!--                                            <i class="fa fa-globe text-muted mr-2"/><t t-esc="student.nationality_id.name or 'N/A'"/>-->
+                                        </div>
+
+                                        <div class="row text-center border-top pt-3">
+                                            <div class="col-4">
+                                                <small class="text-muted d-block">Applications</small>
+                                                <strong><t t-esc="student.application_count"/></strong>
+                                            </div>
+                                            <div class="col-4">
+                                                <small class="text-muted d-block">Documents</small>
+                                                <strong><t t-esc="student.document_count"/></strong>
+                                            </div>
+                                            <div class="col-4">
+                                                <small class="text-muted d-block">Payments</small>
+                                                <strong>৳<t t-esc="'%.0f' % student.total_paid"/></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white">
+                                        <div class="btn-group btn-group-sm w-100" role="group">
+                                            <a t-attf-href="/my/visa/student/#{student.id}" class="btn btn-outline-primary">
+                                                <i class="fa fa-eye"/>View
+                                            </a>
+                                            <a t-attf-href="/my/visa/student/edit/#{student.id}" class="btn btn-outline-info">
+                                                <i class="fa fa-edit"/>Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="mt-4" t-if="pager">
+                        <t t-call="portal.pager"/>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== STUDENT DETAIL ==================== -->
+    <template id="portal_student_detail" name="Student Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title"><t t-esc="student.name"/></t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px; font-size: 48px;">
+                                    <t t-esc="student.name[:1].upper()"/>
+                                </div>
+                                <h4 class="mb-1"><t t-esc="student.name"/></h4>
+                                <p class="text-muted mb-3"><t t-esc="student.email"/></p>
+
+                                <div class="btn-group w-100 mb-3">
+                                    <a t-attf-href="/my/visa/student/edit/#{student.id}" class="btn btn-primary">
+                                        <i class="fa fa-edit mr-1"/>Edit
+                                    </a>
+                                    <a t-attf-href="/my/visa/student/delete/#{student.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">
+                                        <i class="fa fa-trash mr-1"/>Delete
+                                    </a>
+                                </div>
+
+                                <hr/>
+
+                                <div class="text-left">
+                                    <p class="mb-2"><strong>Phone:</strong> <t t-esc="student.phone or 'N/A'"/></p>
+                                    <p class="mb-2"><strong>Passport:</strong> <t t-esc="student.passport_number or 'N/A'"/></p>
+                                    <p class="mb-2"><strong>Date of Birth:</strong> <t t-esc="student.date_of_birth or 'N/A'"/></p>
+<!--                                    <p class="mb-0"><strong>Address:</strong> <t t-esc="student.address or 'N/A'"/></p>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <!-- Statistics -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3><t t-esc="student.application_count"/></h3>
+                                        <p class="mb-0">Applications</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3><t t-esc="student.document_count"/></h3>
+                                        <p class="mb-0">Documents</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3>৳<t t-esc="'%.0f' % student.total_paid"/></h3>
+                                        <p class="mb-0">Total Paid</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Applications -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fa fa-file-text mr-2"/>Applications</h5>
+                                <a href="/my/visa/application/create" class="btn btn-sm btn-primary">Add Application</a>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="not student.application_ids">
+                                    <p class="text-muted text-center mb-0">No applications yet</p>
+                                </t>
+                                <t t-if="student.application_ids">
+                                    <div class="list-group">
+                                        <t t-foreach="student.application_ids" t-as="app">
+                                            <a t-attf-href="/my/visa/application/#{app.id}" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><t t-esc="app.name"/></h6>
+                                                    <small>
+                                                        <span t-att-class="'badge badge-%s' % ('success' if app.state == 'visa_approved' else 'warning' if app.state == 'in_progress' else 'secondary')">
+                                                            <t t-esc="app.state.replace('_', ' ').title()"/>
+                                                        </span>
+                                                    </small>
+                                                </div>
+<!--                                                <p class="mb-1"><small><t t-esc="app.destination_country_id.name"/></small></p>-->
+                                            </a>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Documents -->
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fa fa-folder mr-2"/>Documents</h5>
+                            </div>
+                            <div class="card-body">
+                                <t t-if="not student.document_ids">
+                                    <p class="text-muted text-center mb-0">No documents yet</p>
+                                </t>
+                                <t t-if="student.document_ids">
+                                    <div class="list-group">
+                                        <t t-foreach="student.document_ids" t-as="doc">
+                                            <a t-attf-href="/my/visa/document/#{doc.id}" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><t t-esc="doc.name"/></h6>
+                                                    <small>
+                                                        <span t-att-class="'badge badge-%s' % ('success' if doc.state == 'verified' else 'warning' if doc.state == 'received' else 'secondary')">
+                                                            <t t-esc="doc.state.title()"/>
+                                                        </span>
+                                                    </small>
+                                                </div>
+                                                <small class="text-muted"><t t-esc="doc.document_type.replace('_', ' ').title()"/></small>
+                                            </a>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== APPLICATIONS LIST ==================== -->
+       <template id="portal_application_form" name="Application Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">
+                    <t t-if="application">Edit Application</t>
+                    <t t-else="">Create New Application</t>
+                </t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h4 class="mb-0">
+                                    <i class="fa fa-file-text mr-2"/>
+                                    <t t-if="application">Edit Application</t>
+                                    <t t-else="">New Application</t>
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="/my/visa/application/save" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input t-if="application" type="hidden" name="application_id" t-att-value="application.id"/>
+
+                                    <!-- Student Information -->
+                                    <h5 class="border-bottom pb-2 mb-3">Student Information</h5>
+
+                                    <div class="mb-3">
+                                        <label for="student_id" class="form-label">Select Student *</label>
+                                        <select class="form-control" id="student_id" name="student_id" required="required">
+                                            <option value="">Choose a student...</option>
+                                            <t t-foreach="students" t-as="stud">
+                                                <option t-att-value="stud.id"
+                                                        t-att-selected="'selected' if application and application.student_id.id == stud.id else None">
+                                                    <t t-esc="stud.name"/> - <t t-esc="stud.email"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+
+                                    <!-- Application Details -->
+                                    <h5 class="border-bottom pb-2 mb-3 mt-4">Application Details</h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="application_type" class="form-label">Application Type *</label>
+                                            <select class="form-control" id="application_type" name="application_type" required="required">
+                                                <option value="">Select Type</option>
+                                                <option value="student_visa" t-att-selected="'selected' if application and application.application_type == 'student_visa' else None">Student Visa</option>
+                                                <option value="work_visa" t-att-selected="'selected' if application and application.application_type == 'work_visa' else None">Work Visa</option>
+                                                <option value="tourist_visa" t-att-selected="'selected' if application and application.application_type == 'tourist_visa' else None">Tourist Visa</option>
+                                                <option value="business_visa" t-att-selected="'selected' if application and application.application_type == 'business_visa' else None">Business Visa</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="destination_country_id" class="form-label">Destination Country *</label>
+                                            <select class="form-control" id="destination_country_id" name="destination_country_id" required="required">
+                                                <option value="">Select Country</option>
+                                                <t t-foreach="countries" t-as="country">
+                                                    <option t-att-value="country.id"
+                                                            t-att-selected="'selected' if application and application.destination_country_id.id == country.id else None">
+                                                        <t t-esc="country.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="visa_type" class="form-label">Visa Type</label>
+                                            <input type="text" class="form-control" id="visa_type" name="visa_type"
+                                                   t-att-value="application.visa_type if application else ''"
+                                                   placeholder="e.g., F-1, H-1B"/>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="intake" class="form-label">Intake</label>
+                                            <input type="text" class="form-control" id="intake" name="intake"
+                                                   t-att-value="application.intake if application else ''"
+                                                   placeholder="e.g., Fall 2025"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- University Information -->
+                                    <h5 class="border-bottom pb-2 mb-3 mt-4">University/Institution Details</h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="university_name" class="form-label">University/Institution Name</label>
+                                            <input type="text" class="form-control" id="university_name" name="university_name"
+                                                   t-att-value="application.university_name if application else ''"/>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="course_name" class="form-label">Course/Program Name</label>
+                                            <input type="text" class="form-control" id="course_name" name="course_name"
+                                                   t-att-value="application.course_name if application else ''"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Important Dates -->
+                                    <h5 class="border-bottom pb-2 mb-3 mt-4">Important Dates</h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="application_date" class="form-label">Application Date *</label>
+                                            <input type="date" class="form-control" id="application_date" name="application_date"
+                                                   t-att-value="application.application_date if application else ''" required="required"/>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="expected_travel_date" class="form-label">Expected Travel Date</label>
+                                            <input type="date" class="form-control" id="expected_travel_date" name="expected_travel_date"
+                                                   t-att-value="application.expected_travel_date if application else ''"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Additional Notes -->
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Additional Notes</label>
+                                        <textarea class="form-control" id="notes" name="notes" rows="4"><t t-if="application" t-esc="application.notes"/></textarea>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="mt-4 d-flex justify-content-between">
+                                        <a href="/my/visa/applications" class="btn btn-secondary">
+                                            <i class="fa fa-times mr-1"/>Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-save mr-1"/>Save Application
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
